@@ -4,71 +4,139 @@
 #include <dt-bindings/zmk/outputs.h>
 
 #define BASE_QWT 0
-#define L_MOD    1
-#define R_MOD    2
+#define L_SYM    1
+#define R_SYM    2
 #define NAV      3
-#define ADJ      4
+#define NUM      4
+#define ADJ      5
 
 &caps_word {
     continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>;
 };
 
 / {
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        tri_layer {
+            if-layers = <R_SYM NAV>;
+            then-layer = <NUM>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
-        /* Layer 0: QWERTY inner 3x5 core + rare utilities on outer pinky columns */
+        // Legend: [HELD] = key(s) held down to keep this layer active ({HELD} = right-hand ADJ alt),
+        //         C+SP = Ctrl+Space (한/영; or swap to &kp RGUI for Karabiner right_command -> fn),
+        //         G+S4/5 = Cmd+Shift+4/5, G+SA/Z = Cmd+Shift+A/Z, G+S[/] = Cmd+Shift+[/],
+        //         C+D/U = Ctrl+D/U, CAPW = Caps Word, ___ = &trans, XXX = &none
+
+        // Layer 0: Base QWERTY (English ABC + Korean 2-Set 두벌식; standard outer pinky edge keys)
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        // | TAB  |  Q   |  W   |  E   |  R   |  T   |   |  Y   |  U   |  I   |  O   |  P   | BSPC |
+        // | ESC  |  A   |  S   |  D   |  F   |  G   |   |  H   |  J   |  K   |  L   |  ;   | RET  |
+        // | C+SP |  Z   |  X   |  C   |  V   |  B   |   |  N   |  M   |  ,   |  .   |  /   | CAPW |
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        //                      | NAV  | SPC  | LSYM |   | RSYM | SHFT | DEL  |
+        //                      +------+------+------+   +------+------+------+
         base_qwt_layer {
             display-name = "QWERTY";
             bindings = <
-                &kp TAB        &kp Q  &kp W  &kp E  &kp R  &kp T        &kp Y  &kp U  &kp I      &kp O    &kp P      &kp LG(LS(N4))
-                &kp ESC        &kp A  &kp S  &kp D  &kp F  &kp G        &kp H  &kp J  &kp K      &kp L    &kp SEMI   &kp LG(LS(N5))
-                &kp LC(SPACE)  &kp Z  &kp X  &kp C  &kp V  &kp B        &kp N  &kp M  &kp COMMA  &kp DOT  &kp FSLH   &caps_word
-                                    &mo NAV  &kp SPACE  &mo L_MOD      &mo R_MOD  &kp BSPC  &kp LSHFT
+                &kp TAB        &kp Q  &kp W  &kp E  &kp R  &kp T        &kp Y  &kp U  &kp I      &kp O    &kp P     &kp BSPC
+                &kp ESC        &kp A  &kp S  &kp D  &kp F  &kp G        &kp H  &kp J  &kp K      &kp L    &kp SEMI  &kp RET
+                &kp LC(SPACE)  &kp Z  &kp X  &kp C  &kp V  &kp B        &kp N  &kp M  &kp COMMA  &kp DOT  &kp FSLH  &caps_word
+                                      &mo NAV  &kp SPACE  &mo L_SYM      &mo R_SYM  &kp LSHFT  &kp DEL
             >;
         };
 
-        /* Layer 1: Left Half-Mods (Right Half = &trans Base QWERTY) */
-        l_mod_layer {
-            display-name = "L-Mod";
+        // Layer 1: Left Half-Layer — Hold L_IN = [HELD] (Left Mods + Syms | Right Half = &trans Base)
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        // |  ~   |  `   |  {   |  }   |  (   |  )   |   | ___  | ___  | ___  | ___  | ___  | ___  |
+        // |  \   | LGUI | LALT | LCTL | LSFT |  '   |   | ___  | ___  | ___  | ___  | ___  | ___  |
+        // | ADJ  |  "   |  [   |  ]   |  _   |  |   |   | ___  | ___  | ___  | ___  | ___  | ___  |
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        //                      | ___  | ___  |[HELD]|   | ___  | ___  | ___  |
+        //                      +------+------+------+   +------+------+------+
+        l_sym_layer {
+            display-name = "L-Sym";
             bindings = <
-                &trans  &trans    &trans    &trans     &trans    &trans        &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &kp LGUI  &kp LALT  &kp LCTRL  &kp LSHFT &trans        &trans  &trans  &trans  &trans  &trans  &trans
-                &mo ADJ &trans    &trans    &trans     &trans    &trans        &trans  &trans  &trans  &trans  &trans  &trans
-                                  &trans    &trans     &trans                  &trans  &kp TAB &trans
+                &kp TILDE  &kp GRAVE  &kp LBRC   &kp RBRC   &kp LPAR   &kp RPAR      &trans  &trans  &trans  &trans  &trans  &trans
+                &kp BSLH   &kp LGUI   &kp LALT   &kp LCTRL  &kp LSHFT  &kp SQT       &trans  &trans  &trans  &trans  &trans  &trans
+                &mo ADJ    &kp DQT    &kp LBKT   &kp RBKT   &kp UNDER  &kp PIPE      &trans  &trans  &trans  &trans  &trans  &trans
+                                      &trans     &trans     &trans                   &trans  &trans  &trans
             >;
         };
 
-        /* Layer 2: Right Half-Mods (Left Half = &trans Base QWERTY) */
-        r_mod_layer {
-            display-name = "R-Mod";
+        // Layer 2: Right Half-Layer — Hold R_IN = [HELD] (Left Half = &trans Base | Right Mods + Syms)
+        //   Uses LGUI (not RGUI) on right pinky so Karabiner right_command -> fn doesn't hijack Cmd
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        // | ___  | ___  | ___  | ___  | ___  | ___  |   |  =   |  -   |  +   |  *   |  !   |  #   |
+        // | ___  | ___  | ___  | ___  | ___  | ___  |   |  :   | RSFT | RCTL | RALT | LGUI |  ?   |
+        // | ___  | ___  | ___  | ___  | ___  | ___  |   |  @   |  ^   |  $   |  %   |  &   | ADJ  |
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        //                      | ___  | TAB  | ___  |   |[HELD]| ___  | ___  |
+        //                      +------+------+------+   +------+------+------+
+        r_sym_layer {
+            display-name = "R-Sym";
             bindings = <
-                &trans  &trans  &trans  &trans   &trans  &trans        &trans  &trans     &trans    &trans    &trans    &trans
-                &trans  &trans  &trans  &trans   &trans  &trans        &trans  &kp RSHFT  &kp RCTRL &kp RALT  &kp RGUI  &trans
-                &trans  &trans  &trans  &trans   &trans  &trans        &trans  &trans     &trans    &trans    &trans    &mo ADJ
-                                &trans  &kp TAB  &trans                &trans  &trans     &trans 
+                &trans  &trans  &trans  &trans  &trans  &trans       &kp EQUAL  &kp MINUS  &kp PLUS   &kp ASTRK  &kp EXCL   &kp HASH
+                &trans  &trans  &trans  &trans  &trans  &trans       &kp COLON  &kp RSHFT  &kp RCTRL  &kp RALT   &kp LGUI   &kp QMARK
+                &trans  &trans  &trans  &trans  &trans  &trans       &kp AT     &kp CARET  &kp DLLR   &kp PRCNT  &kp AMPS   &mo ADJ
+                                &trans  &kp TAB &trans               &trans     &trans     &trans
             >;
         };
 
-        /* Layer 3: NAV (Hold L_OUT) */
+        // Layer 3: NAV — Hold L_OUT = [HELD]
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        // | ___  | ESC  | CAPW | G+S4 | G+S5 | G+SA |   | ESC  | G+S[ | C+D  | C+U  | G+S] | DEL  |
+        // | ___  | LGUI | LALT | LCTL | LSFT | TAB  |   | BSPC | LEFT | DOWN |  UP  | RGHT | RET  |
+        // | ADJ  | G+Z  | G+X  | G+C  | G+V  | G+SZ |   | INS  | HOME | PGDN | PGUP | END  | ___  |
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        //                      |[HELD]| ___  | ___  |   | ___  | RET  | DEL  |
+        //                      +------+------+------+   +------+------+------+
         nav_layer {
             display-name = "Nav";
             bindings = <
-                &trans   &kp ESC     &caps_word  &kp LG(LS(N4))  &kp LG(LS(N5))  &kp LG(LS(A))       &kp ESC      &kp LG(LS(LBKT))  &kp LC(D)  &kp LC(U)  &kp LG(LS(RBKT))  &kp DEL
-                &trans   &kp LGUI    &kp LALT    &kp LCTRL       &kp LSHFT       &kp TAB             &kp BSPC     &kp LEFT          &kp DOWN   &kp UP     &kp RIGHT         &kp RET
-                &mo ADJ  &kp LG(Z)   &kp LG(X)   &kp LG(C)       &kp LG(V)       &kp LG(LS(Z))       &kp INS      &kp HOME          &kp PG_DN  &kp PG_UP  &kp END           &trans
-                                     &trans      &trans          &trans                              &trans       &kp RET           &kp DEL
+                &trans   &kp ESC    &caps_word  &kp LG(LS(N4))  &kp LG(LS(N5))  &kp LG(LS(A))       &kp ESC   &kp LG(LS(LBKT))  &kp LC(D)  &kp LC(U)  &kp LG(LS(RBKT))  &kp DEL
+                &trans   &kp LGUI   &kp LALT    &kp LCTRL       &kp LSHFT       &kp TAB             &kp BSPC  &kp LEFT          &kp DOWN   &kp UP     &kp RIGHT         &kp RET
+                &mo ADJ  &kp LG(Z)  &kp LG(X)   &kp LG(C)       &kp LG(V)       &kp LG(LS(Z))       &kp INS   &kp HOME          &kp PG_DN  &kp PG_UP  &kp END           &trans
+                                    &trans      &trans          &trans                              &trans    &kp RET           &kp DEL
             >;
         };
 
-        /* Layer 4: Bluetooth & Bootloader */
+        // Layer 4: NUM — Tri-Layer: Hold BOTH L_OUT + R_IN = [HELD]
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        // | ___  |  F1  |  F2  |  F3  |  F4  |  F5  |   |  /   |  7   |  8   |  9   |  -   | F12  |
+        // | ___  | LGUI | LALT | LCTL | LSFT | F11  |   |  =   |  4   |  5   |  6   |  +   | ___  |
+        // | ___  |  F6  |  F7  |  F8  |  F9  | F10  |   |  ,   |  1   |  2   |  3   |  .   | ___  |
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        //                      |[HELD]| ___  | ___  |   |[HELD]|  0   | RET  |
+        //                      +------+------+------+   +------+------+------+
+        num_layer {
+            display-name = "Num";
+            bindings = <
+                &trans  &kp F1    &kp F2    &kp F3     &kp F4     &kp F5       &kp FSLH   &kp N7  &kp N8  &kp N9  &kp MINUS  &kp F12
+                &trans  &kp LGUI  &kp LALT  &kp LCTRL  &kp LSHFT  &kp F11      &kp EQUAL  &kp N4  &kp N5  &kp N6  &kp PLUS   &trans
+                &trans  &kp F6    &kp F7    &kp F8     &kp F9     &kp F10      &kp COMMA  &kp N1  &kp N2  &kp N3  &kp DOT    &trans
+                                  &trans    &trans     &trans                  &trans     &kp N0  &kp RET
+            >;
+        };
+
+        // Layer 5: Adjust — Hold [HELD]+[HELD] (Left) OR {HELD}+{HELD} (Right)
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        // | ___  | BT 0 | BT 1 | BT 2 | BT 3 | OUT  |   | XXX  | XXX  | XXX  | XXX  | XXX  | ___  |
+        // | ___  | XXX  | XXX  | XXX  | XXX  | XXX  |   | XXX  | XXX  | XXX  | XXX  | XXX  | ___  |
+        // |[HELD]| XXX  | XXX  | XXX  | XXX  | BOOT |   | BOOT | XXX  | XXX  | XXX  |BTCLR |{HELD}|
+        // +------+------+------+------+------+------+   +------+------+------+------+------+------+
+        //                      | ___  | ___  |[HELD]|   |{HELD}| ___  | ___  |
+        //                      +------+------+------+   +------+------+------+
         adj_layer {
             display-name = "Adjust";
             bindings = <
-                &trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &out OUT_TOG        &none        &none   &none   &none  &none       &trans
-                &trans  &none         &none         &none         &none         &none               &none        &none   &none   &none  &none       &trans
-                &trans  &none         &none         &none         &none         &bootloader         &bootloader  &none   &none   &none  &bt BT_CLR  &trans
-                                      &trans        &trans        &trans                            &trans       &trans  &trans 
+                &trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &out OUT_TOG      &none        &none  &none  &none  &none       &trans
+                &trans  &none         &none         &none         &none         &none             &none        &none  &none  &none  &none       &trans
+                &trans  &none         &none         &none         &none         &bootloader       &bootloader  &none  &none  &none  &bt BT_CLR  &trans
+                                      &trans        &trans        &trans                          &trans       &trans &trans
             >;
         };
     };

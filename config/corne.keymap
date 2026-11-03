@@ -21,10 +21,10 @@
         base_qwt_layer {
             display-name = "QWERTY";
             bindings = <
-                &kp TAB  &kp Q  &kp W  &kp E  &kp R  &kp T        &kp Y  &kp U  &kp I      &kp O    &kp P      &kp LG(LS(N4))
-                &kp ESC  &kp A  &kp S  &kp D  &kp F  &kp G        &kp H  &kp J  &kp K      &kp L    &kp SEMI   &kp LG(LS(N5))
-                &kp F18  &kp Z  &kp X  &kp C  &kp V  &kp B        &kp N  &kp M  &kp COMMA  &kp DOT  &kp FSLH   &caps_word
-                              &mo NAV  &kp SPACE  &mo L_MOD      &mo R_MOD  &kp BSPC  &kp LSHFT
+                &kp TAB        &kp Q  &kp W  &kp E  &kp R  &kp T        &kp Y  &kp U  &kp I      &kp O    &kp P      &kp LG(LS(N4))
+                &kp ESC        &kp A  &kp S  &kp D  &kp F  &kp G        &kp H  &kp J  &kp K      &kp L    &kp SEMI   &kp LG(LS(N5))
+                &kp LC(SPACE)  &kp Z  &kp X  &kp C  &kp V  &kp B        &kp N  &kp M  &kp COMMA  &kp DOT  &kp FSLH   &caps_word
+                                    &mo NAV  &kp SPACE  &mo L_MOD      &mo R_MOD  &kp BSPC  &kp LSHFT
             >;
         };
 

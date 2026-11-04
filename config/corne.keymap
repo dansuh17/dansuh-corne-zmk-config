@@ -51,18 +51,18 @@
 
         // Layer 1: Left Half-Layer — Hold L_IN = [HELD] (Left Mods + Syms | Right Half = &trans Base)
         // +------+------+------+------+------+------+   +------+------+------+------+------+------+
-        // |  ~   |  `   |  {   |  }   |  (   |  )   |   | ___  | ___  | ___  | ___  | ___  | ___  |
-        // |  \   | LGUI | LALT | LCTL | LSFT |  '   |   | ___  | ___  | ___  | ___  | ___  | ___  |
-        // | ADJ  |  "   |  [   |  ]   |  _   |  |   |   | ___  | ___  | ___  | ___  | ___  | ___  |
+        // |  @   |  `   |  [   |  ]   |  (   |  )   |   | ___  | ___  | ___  | ___  | ___  | ___  |
+        // |  %   | LGUI | LALT | LCTL | LSFT |  '   |   | ___  | ___  | ___  | ___  | ___  | ___  |
+        // | ADJ  |  ?   |  {   |  }   |  \   |  "   |   | ___  | ___  | ___  | ___  | ___  | ___  |
         // +------+------+------+------+------+------+   +------+------+------+------+------+------+
         //                      | ___  | ___  |[HELD]|   | ___  | ___  | ___  |
         //                      +------+------+------+   +------+------+------+
         l_sym_layer {
             display-name = "L-Sym";
             bindings = <
-                &kp TILDE  &kp GRAVE  &kp LBRC   &kp RBRC   &kp LPAR   &kp RPAR      &trans  &trans  &trans  &trans  &trans  &trans
-                &kp BSLH   &kp LGUI   &kp LALT   &kp LCTRL  &kp LSHFT  &kp SQT       &trans  &trans  &trans  &trans  &trans  &trans
-                &mo ADJ    &kp DQT    &kp LBKT   &kp RBKT   &kp UNDER  &kp PIPE      &trans  &trans  &trans  &trans  &trans  &trans
+                &kp AT     &kp GRAVE  &kp LBKT   &kp RBKT   &kp LPAR   &kp RPAR      &trans  &trans  &trans  &trans  &trans  &trans
+                &kp PRCNT  &kp LGUI   &kp LALT   &kp LCTRL  &kp LSHFT  &kp SQT       &trans  &trans  &trans  &trans  &trans  &trans
+                &mo ADJ    &kp QMARK  &kp LBRC   &kp RBRC   &kp BSLH   &kp DQT       &trans  &trans  &trans  &trans  &trans  &trans
                                       &trans     &trans     &trans                   &trans  &trans  &trans
             >;
         };
@@ -70,55 +70,55 @@
         // Layer 2: Right Half-Layer — Hold R_IN = [HELD] (Left Half = &trans Base | Right Mods + Syms)
         //   Uses LGUI (not RGUI) on right pinky so Karabiner right_command -> fn doesn't hijack Cmd
         // +------+------+------+------+------+------+   +------+------+------+------+------+------+
-        // | ___  | ___  | ___  | ___  | ___  | ___  |   |  =   |  -   |  +   |  *   |  !   |  #   |
-        // | ___  | ___  | ___  | ___  | ___  | ___  |   |  :   | RSFT | RCTL | RALT | LGUI |  ?   |
-        // | ___  | ___  | ___  | ___  | ___  | ___  |   |  @   |  ^   |  $   |  %   |  &   | ADJ  |
+        // | ___  | ___  | ___  | ___  | ___  | ___  |   |  +   |  _   |  -   |  =   |  !   |  ^   |
+        // | ___  | ___  | ___  | ___  | ___  | ___  |   |  :   | RSFT | RCTL | RALT | LGUI |  &   |
+        // | ___  | ___  | ___  | ___  | ___  | ___  |   |  |   |  *   |  ~   |  #   |  $   | ADJ  |
         // +------+------+------+------+------+------+   +------+------+------+------+------+------+
         //                      | ___  | TAB  | ___  |   |[HELD]| ___  | ___  |
         //                      +------+------+------+   +------+------+------+
         r_sym_layer {
             display-name = "R-Sym";
             bindings = <
-                &trans  &trans  &trans  &trans  &trans  &trans       &kp EQUAL  &kp MINUS  &kp PLUS   &kp ASTRK  &kp EXCL   &kp HASH
-                &trans  &trans  &trans  &trans  &trans  &trans       &kp COLON  &kp RSHFT  &kp RCTRL  &kp RALT   &kp LGUI   &kp QMARK
-                &trans  &trans  &trans  &trans  &trans  &trans       &kp AT     &kp CARET  &kp DLLR   &kp PRCNT  &kp AMPS   &mo ADJ
+                &trans  &trans  &trans  &trans  &trans  &trans       &kp PLUS   &kp UNDER  &kp MINUS  &kp EQUAL  &kp EXCL   &kp CARET
+                &trans  &trans  &trans  &trans  &trans  &trans       &kp COLON  &kp RSHFT  &kp RCTRL  &kp RALT   &kp LGUI   &kp AMPS
+                &trans  &trans  &trans  &trans  &trans  &trans       &kp PIPE   &kp ASTRK  &kp TILDE  &kp HASH   &kp DLLR   &mo ADJ
                                 &trans  &kp TAB &trans               &trans     &trans     &trans
             >;
         };
 
-        // Layer 3: NAV — Hold L_OUT = [HELD]
+        // Layer 3: NAV — Hold L_OUT = [HELD] (1-hand Left BSPC/DEL + Right HJKL arrows)
         // +------+------+------+------+------+------+   +------+------+------+------+------+------+
-        // | ___  | ESC  | CAPW | G+S4 | G+S5 | G+SA |   | ESC  | G+S[ | C+D  | C+U  | G+S] | DEL  |
-        // | ___  | LGUI | LALT | LCTL | LSFT | TAB  |   | BSPC | LEFT | DOWN |  UP  | RGHT | RET  |
-        // | ADJ  | G+Z  | G+X  | G+C  | G+V  | G+SZ |   | INS  | HOME | PGDN | PGUP | END  | ___  |
+        // | ___  | G+S4 | G+S5 | G+SA | BSPC | DEL  |   | G+S[ | C+D  | C+U  | G+S] | ESC  | DEL  |
+        // | ___  | LGUI | LALT | LCTL | LSFT | TAB  |   | LEFT | DOWN |  UP  | RGHT | BSPC | RET  |
+        // | ADJ  | G+Z  | G+X  | G+C  | G+V  | G+SZ |   | HOME | PGDN | PGUP | END  | INS  | ___  |
         // +------+------+------+------+------+------+   +------+------+------+------+------+------+
         //                      |[HELD]| ___  | ___  |   | ___  | RET  | DEL  |
         //                      +------+------+------+   +------+------+------+
         nav_layer {
             display-name = "Nav";
             bindings = <
-                &trans   &kp ESC    &caps_word  &kp LG(LS(N4))  &kp LG(LS(N5))  &kp LG(LS(A))       &kp ESC   &kp LG(LS(LBKT))  &kp LC(D)  &kp LC(U)  &kp LG(LS(RBKT))  &kp DEL
-                &trans   &kp LGUI   &kp LALT    &kp LCTRL       &kp LSHFT       &kp TAB             &kp BSPC  &kp LEFT          &kp DOWN   &kp UP     &kp RIGHT         &kp RET
-                &mo ADJ  &kp LG(Z)  &kp LG(X)   &kp LG(C)       &kp LG(V)       &kp LG(LS(Z))       &kp INS   &kp HOME          &kp PG_DN  &kp PG_UP  &kp END           &trans
-                                    &trans      &trans          &trans                              &trans    &kp RET           &kp DEL
+                &trans   &kp LG(LS(N4))  &kp LG(LS(N5))  &kp LG(LS(A))  &kp BSPC   &kp DEL             &kp LG(LS(LBKT))  &kp LC(D)  &kp LC(U)  &kp LG(LS(RBKT))  &kp ESC   &kp DEL
+                &trans   &kp LGUI        &kp LALT        &kp LCTRL      &kp LSHFT  &kp TAB             &kp LEFT          &kp DOWN   &kp UP     &kp RIGHT         &kp BSPC  &kp RET
+                &mo ADJ  &kp LG(Z)       &kp LG(X)       &kp LG(C)      &kp LG(V)  &kp LG(LS(Z))       &kp HOME          &kp PG_DN  &kp PG_UP  &kp END           &kp INS   &trans
+                                         &trans          &trans         &trans                         &trans            &kp RET    &kp DEL
             >;
         };
 
-        // Layer 4: NUM — Tri-Layer: Hold BOTH L_OUT + R_IN = [HELD]
+        // Layer 4: NUM — Tri-Layer: Hold BOTH L_OUT + R_IN = [HELD] (Home Pinky = 0, Col 11 = Base BSPC/RET)
         // +------+------+------+------+------+------+   +------+------+------+------+------+------+
-        // | ___  |  F1  |  F2  |  F3  |  F4  |  F5  |   |  /   |  7   |  8   |  9   |  -   | F12  |
-        // | ___  | LGUI | LALT | LCTL | LSFT | F11  |   |  =   |  4   |  5   |  6   |  +   | ___  |
-        // | ___  |  F6  |  F7  |  F8  |  F9  | F10  |   |  ,   |  1   |  2   |  3   |  .   | ___  |
+        // | F12  |  F1  |  F2  |  F3  |  F4  |  F5  |   |  /   |  7   |  8   |  9   |  -   | ___  |
+        // | ___  | LGUI | LALT | LCTL | LSFT | F11  |   |  +   |  4   |  5   |  6   |  0   | ___  |
+        // | ___  |  F6  |  F7  |  F8  |  F9  | F10  |   |  =   |  1   |  2   |  3   |  .   |  *   |
         // +------+------+------+------+------+------+   +------+------+------+------+------+------+
-        //                      |[HELD]| ___  | ___  |   |[HELD]|  0   | RET  |
+        //                      |[HELD]| ___  | ___  |   |[HELD]| ___  | ___  |
         //                      +------+------+------+   +------+------+------+
         num_layer {
             display-name = "Num";
             bindings = <
-                &trans  &kp F1    &kp F2    &kp F3     &kp F4     &kp F5       &kp FSLH   &kp N7  &kp N8  &kp N9  &kp MINUS  &kp F12
-                &trans  &kp LGUI  &kp LALT  &kp LCTRL  &kp LSHFT  &kp F11      &kp EQUAL  &kp N4  &kp N5  &kp N6  &kp PLUS   &trans
-                &trans  &kp F6    &kp F7    &kp F8     &kp F9     &kp F10      &kp COMMA  &kp N1  &kp N2  &kp N3  &kp DOT    &trans
-                                  &trans    &trans     &trans                  &trans     &kp N0  &kp RET
+                &kp F12  &kp F1    &kp F2    &kp F3     &kp F4     &kp F5       &kp FSLH   &kp N7  &kp N8  &kp N9  &kp MINUS  &trans
+                &trans   &kp LGUI  &kp LALT  &kp LCTRL  &kp LSHFT  &kp F11      &kp PLUS   &kp N4  &kp N5  &kp N6  &kp N0     &trans
+                &trans   &kp F6    &kp F7    &kp F8     &kp F9     &kp F10      &kp EQUAL  &kp N1  &kp N2  &kp N3  &kp DOT    &kp ASTRK
+                                   &trans    &trans     &trans                  &trans     &trans  &trans
             >;
         };
 
